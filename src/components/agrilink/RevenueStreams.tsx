@@ -122,7 +122,7 @@ export function RevenueStreams() {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data} margin={{ left: 8, right: 8, top: 12 }}>
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} tickFormatter={(v: string) => v.split(" ")[0]} />
+                <XAxis dataKey="name" tick={{ fontSize: 11 }} tickFormatter={(v: string) => v.split(" ")[0] ?? v} />
                 <YAxis tick={{ fontSize: 11 }} tickFormatter={(v: number) => kzShort(v)} width={90} />
                 <Tooltip formatter={(v: number) => kzShort(v)} />
                 <Bar dataKey="value" radius={[6, 6, 0, 0]}>

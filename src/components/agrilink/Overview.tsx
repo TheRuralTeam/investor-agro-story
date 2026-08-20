@@ -63,7 +63,7 @@ export function Overview() {
               </span>
               <k.icon className="size-4 text-primary" />
             </div>
-            <EditableNumber field={k.field} suffix={k.suffix} className="kpi-value" />
+            <EditableNumber field={k.field} {...(k.suffix ? { suffix: k.suffix } : {})} className="kpi-value" />
             <p className="text-xs text-muted-foreground">{k.hint(0)}</p>
           </div>
         ))}

@@ -171,7 +171,7 @@ export function buildPlan(i: Inputs): MonthRow[] {
     const k = monthMetrics(i, caixas);
     acumulado += k.margem;
     rows.push({
-      mes: MESES[m],
+      mes: MESES[m] ?? String(m + 1),
       caixas: Math.round(caixas),
       gmv: k.gmv,
       recVenda: k.recVenda,

@@ -55,7 +55,7 @@ export function Presentation() {
           </button>
         </div>
       </header>
-      <main className="present-stage">{slides[i].node}</main>
+      <main className="present-stage">{slides[i]?.node}</main>
     </div>
   );
 }

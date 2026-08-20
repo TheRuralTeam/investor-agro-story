@@ -34,16 +34,13 @@ export function FinancialPlan() {
   const { plan, scenario, presenting } = useAgri();
   const [view, setView] = useState<"tabela" | "grafico">("tabela");
 
-  const totals = plan.reduce(
-    (acc, r) => {
-      LINES.forEach((l) => {
-        if (l.key !== "caixaAcumulado") acc[l.key] = (acc[l.key] ?? 0) + r[l.key];
-      });
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
-  totals.caixaAcumulado = plan[plan.length - 1].caixaAcumulado;
+  const totals: Record<string, number> = {};
+  plan.forEach((r) => {
+    LINES.forEach((l) => {
+      if (l.key !== "caixaAcumulado") totals[l.key] = (totals[l.key] ?? 0) + r[l.key];
+    });
+  });
+  totals["caixaAcumulado"] = plan[plan.length - 1]?.caixaAcumulado ?? 0;
 
   return (
     <section id="plano" className="section">
@@ -104,7 +101,7 @@ export function FinancialPlan() {
                   {plan.map((r) => (
                     <td key={r.mes}>{kzShort(r[l.key])}</td>
                   ))}
-                  <td className="col-total">{kzShort(totals[l.key])}</td>
+                  <td className="col-total">{kzShort(totals[l.key] ?? 0)}</td>
                 </tr>
               ))}
               <tr className="row-margem">
@@ -113,7 +110,7 @@ export function FinancialPlan() {
                   <td key={r.mes}>{pct(r.margemPct)}</td>
                 ))}
                 <td className="col-total">
-                  {pct(totals.receitaTotal ? (totals.margem / totals.receitaTotal) * 100 : 0)}
+                  {pct(totals["receitaTotal"] ? ((totals["margem"] ?? 0) / totals["receitaTotal"]) * 100 : 0)}
                 </td>
               </tr>
             </tbody>
