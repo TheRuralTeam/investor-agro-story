@@ -16,12 +16,6 @@ import { kzShort, num, pct } from "@/lib/agrilink/format";
 import { Button } from "@/components/ui/button";
 import { exportPlanToXlsx } from "@/lib/agrilink/export";
 
-const rows: { key: keyof ReturnType<typeof rowKeys>; label: string }[] = [];
-function rowKeys() {
-  return {} as Record<string, never>;
-}
-void rows;
-
 const LINES = [
   { key: "recVenda", label: "Receita — venda formal", group: "receita" },
   { key: "recTransporte", label: "Receita — corredor/transporte", group: "receita" },
