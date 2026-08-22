@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   BarChart3,
   Coins,
   FileDown,
+  FileSpreadsheet,
   Handshake,
   LayoutDashboard,
   Play,
