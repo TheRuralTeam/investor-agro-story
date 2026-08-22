@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   BarChart3,
   Coins,
   FileDown,
+  FileSpreadsheet,
   Handshake,
   LayoutDashboard,
   Play,
@@ -108,6 +109,9 @@ function Dashboard() {
         </div>
 
         <div className="mt-auto space-y-2 px-2 pt-6">
+          <Link to="/modelo" className="nav-link nav-link-active">
+            <FileSpreadsheet className="size-4" /> Modelo financeiro editável
+          </Link>
           <Button className="w-full" onClick={() => setPresenting(true)}>
             <Play className="size-4" /> Modo Investidor
           </Button>

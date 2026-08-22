@@ -587,3 +587,165 @@
   .section { break-inside: avoid; }
   body { background: #fff; }
 }
+
+/* ---------------- spreadsheet workspace ---------------- */
+
+@utility kpi-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+}
+
+@utility kpi-card {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 1rem 1.1rem;
+}
+
+@utility kpi-label {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  padding-right: 1rem;
+}
+
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+@utility sheet-tab {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-md);
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  &:hover { background: var(--secondary); }
+}
+
+@utility sheet-tab-active {
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+@utility sheet-grid {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.82rem;
+  width: max-content;
+  min-width: 100%;
+  background: var(--card);
+
+  th, td {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    height: 1.9rem;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--secondary);
+    font-weight: 600;
+    font-size: 0.72rem;
+    color: var(--muted-foreground);
+    text-align: center;
+    min-width: 7.5rem;
+  }
+
+  thead th:first-child, tbody th {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--secondary);
+    min-width: 2.6rem;
+    width: 2.6rem;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--muted-foreground);
+  }
+}
+
+@utility col-head-active {
+  background: color-mix(in oklab, var(--primary) 16%, var(--secondary)) !important;
+  color: var(--primary) !important;
+}
+
+@utility row-head-active {
+  background: color-mix(in oklab, var(--primary) 16%, var(--secondary)) !important;
+  color: var(--primary) !important;
+}
+
+@utility sheet-cell {
+  padding: 0 0.5rem;
+  min-width: 7.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: cell;
+}
+
+@utility sheet-cell-label {
+  min-width: 22rem;
+  max-width: 26rem;
+  text-align: left;
+  font-weight: 500;
+}
+
+@utility sheet-cell-calc {
+  background: color-mix(in oklab, var(--primary) 5%, transparent);
+  color: var(--foreground);
+}
+
+@utility sheet-cell-err {
+  color: var(--destructive);
+}
+
+@utility sheet-cell-sel {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+@utility sheet-cell-pad {
+  min-width: 2rem;
+  border-right: none;
+}
+
+@utility cell-input {
+  width: 100%;
+  height: 100%;
+  padding: 0 0.35rem;
+  background: var(--background);
+  font-family: var(--font-mono, ui-monospace);
+  font-size: 0.8rem;
+  outline: none;
+}
+
+@utility sheet-row-section {
+  td, th {
+    background: color-mix(in oklab, var(--primary) 10%, transparent);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+@utility sheet-row-calc {
+  td { font-weight: 600; }
+}
+
+@utility sheet-row-note {
+  td { color: var(--muted-foreground); font-size: 0.75rem; font-style: italic; }
+}

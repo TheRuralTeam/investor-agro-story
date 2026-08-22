@@ -46,7 +46,7 @@ export function parseAddr(a: string): { row: number; col: number } | null {
 type Tok =
   | { t: "num"; v: number }
   | { t: "str"; v: string }
-  | { t: "ref"; sheet?: string; a: string; b?: string }
+  | { t: "ref"; sheet?: string | undefined; a: string; b?: string | undefined }
   | { t: "fn"; v: string }
   | { t: "op"; v: string };
 
