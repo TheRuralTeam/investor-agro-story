@@ -298,6 +298,7 @@ export function Grid() {
                   return (
                     <td
                       key={c}
+                      data-addr={a}
                       className={[
                         "sheet-cell",
                         isSel ? "sheet-cell-sel" : "",
