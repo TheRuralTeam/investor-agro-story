@@ -203,7 +203,26 @@ function ModelWorkspace() {
               </p>
             </header>
             <Grid />
+            <div className="excel-tabbar mt-3 print:hidden">
+              {sheets.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => setActive(s.id)}
+                  onDoubleClick={() => {
+                    const n = window.prompt("Novo nome da folha", s.name);
+                    if (n?.trim()) renameSheet(s.id, n.trim());
+                  }}
+                  className={`excel-tab${s.id === activeId ? " excel-tab-active" : ""}`}
+                >
+                  {s.name}
+                </button>
+              ))}
+              <button className="excel-tab" onClick={() => addSheet()} title="Nova folha">
+                <Plus className="inline size-3.5" />
+              </button>
+            </div>
           </section>
+
         ) : (
           <FinDashboard />
         )}
