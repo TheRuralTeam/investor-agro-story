@@ -7,6 +7,8 @@ import {
   FileSpreadsheet,
   Handshake,
   LayoutDashboard,
+  LogOut,
+  Users,
   Play,
   RotateCcw,
   Route as RouteIcon,
@@ -23,6 +25,7 @@ import { CostStructure } from "@/components/agrilink/CostStructure";
 import { Partners } from "@/components/agrilink/Partners";
 import { Presentation } from "@/components/agrilink/Presentation";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/agrilink-logo.png.asset.json";
 
 export const Route = createFileRoute("/_authenticated/")({
