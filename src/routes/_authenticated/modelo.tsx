@@ -20,7 +20,7 @@ import { exportToPdf, exportWorkbookToXlsx } from "@/lib/finmodel/export";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/agrilink-logo.png.asset.json";
 
-export const Route = createFileRoute("/modelo")({
+export const Route = createFileRoute("/_authenticated/modelo")({
   head: () => ({
     meta: [
       { title: "Modelo Financeiro Editável — AgriLink" },

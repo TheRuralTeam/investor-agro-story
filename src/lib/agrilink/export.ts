@@ -1,12 +1,9 @@
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import type { MonthRow } from "./model";
+import { addBranding, downloadBlob, fetchLogoBuffer } from "@/lib/finmodel/export";
 
-export function exportPlanToXlsx(plan: MonthRow[], scenario: string) {
-  const header = [
-    "Rubrica (Kz)",
-    ...plan.map((r) => r.mes),
-    "Ano 1",
-  ];
+export async function exportPlanToXlsx(plan: MonthRow[], scenario: string) {
+  const header = ["Rubrica (Kz)", ...plan.map((r) => r.mes), "Ano 1"];
   const lines: [string, keyof MonthRow][] = [
     ["Caixas transacionadas", "caixas"],
     ["Volume transacionado (GMV)", "gmv"],
@@ -23,26 +20,43 @@ export function exportPlanToXlsx(plan: MonthRow[], scenario: string) {
     ["Fluxo de caixa acumulado", "caixaAcumulado"],
   ];
 
-  const body = lines.map(([label, key]) => {
+  const wb = new ExcelJS.Workbook();
+  wb.creator = "AgriLink";
+  const buf = await fetchLogoBuffer();
+  const logoId = buf ? wb.addImage({ buffer: buf as ExcelJS.Buffer, extension: "png" }) : undefined;
+
+  const ws = wb.addWorksheet("Plano Financeiro");
+  addBranding(ws, wb, logoId);
+  ws.getCell("C4").value = `Cenário: ${scenario}`;
+  ws.getCell("C4").font = { bold: true, size: 10 };
+
+  const headRow = ws.addRow([]);
+  ws.spliceRows(6, 1, header);
+  ws.getRow(6).font = { bold: true, color: { argb: "FFFFFFFF" } };
+  ws.getRow(6).eachCell((cell) => {
+    cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF1A4D2E" } };
+  });
+  void headRow;
+
+  lines.forEach(([label, key]) => {
     const values = plan.map((r) => Math.round(Number(r[key])));
     const total =
       key === "caixaAcumulado"
-        ? values[values.length - 1]
+        ? (values[values.length - 1] ?? 0)
         : values.reduce((a, b) => a + b, 0);
-    return [label, ...values, total];
+    ws.addRow([label, ...values, total]);
   });
 
-  const ws = XLSX.utils.aoa_to_sheet([
-    [`AgriLink — Plano Financeiro (cenário ${scenario})`],
-    [],
-    header,
-    ...body,
-  ]);
-  ws["!cols"] = [{ wch: 30 }, ...plan.map(() => ({ wch: 14 })), { wch: 16 }];
+  ws.columns = [{ width: 30 }, ...plan.map(() => ({ width: 14 })), { width: 16 }];
+  ws.views = [{ state: "frozen", ySplit: 6, xSplit: 1 }];
 
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Plano Financeiro");
-  XLSX.writeFile(wb, `agrilink-plano-financeiro-${scenario}.xlsx`);
+  const out = await wb.xlsx.writeBuffer();
+  downloadBlob(
+    new Blob([out], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    }),
+    `agrilink-plano-financeiro-${scenario}.xlsx`,
+  );
 }
 
 export function exportToPdf() {
