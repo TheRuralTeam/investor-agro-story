@@ -25,7 +25,7 @@ import { Presentation } from "@/components/agrilink/Presentation";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/agrilink-logo.png.asset.json";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "AgriLink — Modelo Financeiro e Fluxos de Receita" },
