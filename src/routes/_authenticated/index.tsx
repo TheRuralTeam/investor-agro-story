@@ -118,6 +118,20 @@ function Dashboard() {
           <Button variant="outline" className="w-full" onClick={exportToPdf}>
             <FileDown className="size-4" /> Exportar PDF
           </Button>
+          <Link to="/admin" className="nav-link">
+            <Users className="size-4" /> Utilizadores
+          </Link>
+          <Button
+            variant="ghost"
+            className="w-full"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              window.location.href = "/auth";
+            }}
+          >
+            <LogOut className="size-4" /> Terminar sessão
+          </Button>
+
         </div>
       </aside>
 
