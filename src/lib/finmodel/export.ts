@@ -63,13 +63,13 @@ export async function exportWorkbookToXlsx(
       const cell = ws.getCell(p.row + 1 + HEADER_ROWS, p.col + 1);
       const computed = values.get(`${sheet.id}!${a}`)?.value;
       if (raw.startsWith("=")) {
-        cell.value = {
+        const fv: ExcelJS.CellFormulaValue = {
           formula: shiftFormula(raw.slice(1), HEADER_ROWS),
           date1904: false,
-          ...(typeof computed === "number" && Number.isFinite(computed)
-            ? { result: computed }
-            : {}),
-        } as ExcelJS.CellFormulaValue;
+        };
+        if (typeof computed === "number" && Number.isFinite(computed)) fv.result = computed;
+        cell.value = fv;
+
       } else if (typeof computed === "number" && Number.isFinite(computed)) {
         cell.value = computed;
       } else {
