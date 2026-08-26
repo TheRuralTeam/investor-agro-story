@@ -72,7 +72,6 @@ export async function exportWorkbookToXlsx(
       } else {
         cell.value = String(computed ?? raw);
       }
-      if (p.col === 0) cell.font = { bold: raw !== "" && !raw.startsWith("=") ? false : false };
     }
 
     ws.columns = Array.from({ length: Math.max(maxC + 1, 3) }, (_, c) => ({
