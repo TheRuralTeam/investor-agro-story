@@ -65,8 +65,11 @@ export async function exportWorkbookToXlsx(
       if (raw.startsWith("=")) {
         cell.value = {
           formula: shiftFormula(raw.slice(1), HEADER_ROWS),
-          result: typeof computed === "number" && Number.isFinite(computed) ? computed : undefined,
-        };
+          date1904: false,
+          ...(typeof computed === "number" && Number.isFinite(computed)
+            ? { result: computed }
+            : {}),
+        } as ExcelJS.CellFormulaValue;
       } else if (typeof computed === "number" && Number.isFinite(computed)) {
         cell.value = computed;
       } else {
