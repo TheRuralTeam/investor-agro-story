@@ -9,68 +9,68 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ModeloRouteImport } from './routes/modelo'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedModeloRouteImport } from './routes/_authenticated/modelo'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/_authenticated/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ModeloRoute = ModeloRouteImport.update({
-  id: '/modelo',
+const AuthenticatedModeloRoute = AuthenticatedModeloRouteImport.update({
+  id: '/_authenticated/modelo',
   path: '/modelo',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/modelo': typeof ModeloRoute
+  '/modelo': typeof AuthenticatedModeloRoute
+  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/modelo': typeof ModeloRoute
+  '/modelo': typeof AuthenticatedModeloRoute
+  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/modelo': typeof ModeloRoute
+  '/_authenticated/modelo': typeof AuthenticatedModeloRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/modelo'
+  fullPaths: '/modelo' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/modelo'
-  id: '__root__' | '/' | '/modelo'
+  to: '/modelo' | '/'
+  id: '__root__' | '/_authenticated/modelo' | '/_authenticated/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  ModeloRoute: typeof ModeloRoute
+  AuthenticatedModeloRoute: typeof AuthenticatedModeloRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/modelo': {
-      id: '/modelo'
+    '/_authenticated/modelo': {
+      id: '/_authenticated/modelo'
       path: '/modelo'
       fullPath: '/modelo'
-      preLoaderRoute: typeof ModeloRouteImport
+      preLoaderRoute: typeof AuthenticatedModeloRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  ModeloRoute: ModeloRoute,
+  AuthenticatedModeloRoute: AuthenticatedModeloRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
