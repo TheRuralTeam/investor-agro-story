@@ -56,6 +56,16 @@ interface Ctx {
   loadSnapshot: (name: string) => void;
   deleteSnapshot: (name: string) => void;
   setRowFmt: (sheetId: string, row: number, fmt: SheetMeta["rowFmt"][number] | null) => void;
+  applyAiOps: (ops: AiOp[]) => void;
+}
+
+export interface AiOp {
+  kind: "set" | "clear" | "sheet" | "fmt";
+  sheet?: string | null;
+  addr?: string | null;
+  value?: string | null;
+  row?: number | null;
+  fmt?: string | null;
 }
 
 const FinCtx = createContext<Ctx | null>(null);
