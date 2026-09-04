@@ -276,6 +276,54 @@ export function FinProvider({ children }: { children: ReactNode }) {
           else delete rowFmt[row];
           return { ...p, meta: { ...p.meta, [sheetId]: { ...m, rowFmt } } };
         }),
+      applyAiOps: (ops) =>
+        setState((p) => {
+          let sheets = p.sheets.map((s) => ({ ...s, cells: { ...s.cells } }));
+          const meta = { ...p.meta };
+          let activeId = p.activeId;
+          const findId = (name?: string | null) => {
+            if (!name) return activeId;
+            const hit = sheets.find((s) => s.name.toLowerCase() === name.trim().toLowerCase());
+            return hit?.id ?? activeId;
+          };
+          let seq = 0;
+          for (const op of ops) {
+            if (op.kind === "sheet") {
+              const nm = (op.value ?? op.sheet ?? "Nova folha").trim();
+              if (sheets.some((s) => s.name.toLowerCase() === nm.toLowerCase())) continue;
+              const id = `folha-${Date.now()}-${seq++}`;
+              const b = blankSheet(id, nm);
+              sheets = [...sheets, b.sheet];
+              meta[id] = b.meta;
+              activeId = id;
+              continue;
+            }
+            const id = findId(op.sheet);
+            const idx = sheets.findIndex((s) => s.id === id);
+            if (idx < 0) continue;
+            const s = sheets[idx]!;
+            if (op.kind === "fmt") {
+              const r = (op.row ?? 1) - 1;
+              const m = meta[id] ?? { rowKind: {}, rowFmt: {}, labelCol: 0, headerRow: 2 };
+              const rowFmt = { ...m.rowFmt };
+              if (op.fmt) rowFmt[r] = op.fmt as SheetMeta["rowFmt"][number];
+              else delete rowFmt[r];
+              meta[id] = { ...m, rowFmt };
+              continue;
+            }
+            const a = (op.addr ?? "").toUpperCase().replace(/\$/g, "");
+            const pos = parseAddr(a);
+            if (!pos) continue;
+            if (op.kind === "clear" || !op.value) delete s.cells[a];
+            else s.cells[a] = op.value;
+            sheets[idx] = {
+              ...s,
+              rows: Math.max(s.rows, pos.row + 1),
+              cols: Math.max(s.cols, pos.col + 1),
+            };
+          }
+          return { ...p, sheets, meta, activeId };
+        }),
     };
   }, [state, patchSheet]);
 
