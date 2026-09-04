@@ -5,6 +5,7 @@ import {
   Copy,
   FileDown,
   FileSpreadsheet,
+  Bot,
   LayoutDashboard,
   Pencil,
   Plus,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import { FinProvider, useFin } from "@/lib/finmodel/store";
 import { Grid } from "@/components/finmodel/Grid";
+import { AiAgent } from "@/components/finmodel/AiAgent";
 import { FinDashboard } from "@/components/finmodel/Dashboard";
 import { exportToPdf, exportWorkbookToXlsx } from "@/lib/finmodel/export";
 import { Button } from "@/components/ui/button";
@@ -62,7 +64,7 @@ function ModelWorkspace() {
     loadSnapshot,
     deleteSnapshot,
   } = useFin();
-  const [tab, setTab] = useState<"folhas" | "painel">("folhas");
+  const [tab, setTab] = useState<"folhas" | "painel" | "agente">("folhas");
 
   return (
     <div className="app-shell">
@@ -82,6 +84,12 @@ function ModelWorkspace() {
             onClick={() => setTab("painel")}
           >
             <LayoutDashboard className="size-4" /> Painel e gráficos
+          </button>
+          <button
+            className={`nav-link w-full${tab === "agente" ? " nav-link-active" : ""}`}
+            onClick={() => setTab("agente")}
+          >
+            <Bot className="size-4" /> Agente de IA
           </button>
         </nav>
 
@@ -223,8 +231,10 @@ function ModelWorkspace() {
             </div>
           </section>
 
-        ) : (
+        ) : tab === "painel" ? (
           <FinDashboard />
+        ) : (
+          <AiAgent />
         )}
         <footer className="pb-16 pt-8 text-xs text-muted-foreground">
           AgriLink · Modelo financeiro · Valores em Kwanza (AOA)
