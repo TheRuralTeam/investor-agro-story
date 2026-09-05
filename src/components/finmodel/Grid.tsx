@@ -86,6 +86,20 @@ export function Grid() {
   const rowFmt = useMemo(() => m?.rowFmt ?? {}, [m]);
   const rowKind = m?.rowKind ?? {};
 
+  const issues = useMemo(() => validateSheet(sheet, m, values), [sheet, m, values]);
+  const issueMap = useMemo(() => issuesByAddr(issues), [issues]);
+  const errorCount = issues.filter((i) => i.level === "error").length;
+  const warnCount = issues.length - errorCount;
+  const [showIssues, setShowIssues] = useState(true);
+
+  const goTo = (a: string) => {
+    const p = parseAddr(a);
+    if (!p) return;
+    setSel(p);
+    setAnchor(p);
+    wrapRef.current?.focus();
+  };
+
   const numeric = rangeAddrs
     .map((a) => values.get(`${sheet.id}!${a}`)?.value)
     .filter((v): v is number => typeof v === "number");
