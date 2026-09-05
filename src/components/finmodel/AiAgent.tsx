@@ -117,6 +117,25 @@ export function AiAgent() {
         </p>
       </header>
 
+      <div className="mb-4">
+        <p className="kicker mb-2">Modelos prontos</p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {TEMPLATES.map((t) => (
+            <button
+              key={t.nome}
+              disabled={busy}
+              onClick={() => void send(t.prompt)}
+              className="rounded-lg border bg-card p-3 text-left transition hover:bg-muted disabled:opacity-60"
+            >
+              <span className="flex items-center gap-2 text-sm font-medium">
+                <Sparkles className="size-4 text-primary" /> {t.nome}
+              </span>
+              <span className="mt-1 block text-xs text-muted-foreground">{t.descricao}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="flex flex-col gap-3 rounded-lg border bg-card p-4">
         <div className="max-h-[52vh] min-h-40 space-y-3 overflow-auto">
           {messages.length === 0 && (
