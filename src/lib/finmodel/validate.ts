@@ -1,4 +1,4 @@
-import { addr, colIndex, colName, parseAddr, type Computed, type Sheet } from "./engine";
+import { addr, colName, parseAddr, type Computed, type Sheet } from "./engine";
 import type { SheetMeta } from "./templates";
 
 export type IssueLevel = "error" | "warn";
@@ -178,5 +178,3 @@ export function issuesByAddr(list: Issue[]): Map<string, Issue> {
   }
   return map;
 }
-
-export { colIndex };
