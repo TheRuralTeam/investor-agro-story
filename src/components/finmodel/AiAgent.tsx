@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Bot, Loader2, Send, User } from "lucide-react";
+import { Bot, Loader2, Send, Sparkles, User } from "lucide-react";
 import { askFinAgent } from "@/lib/finmodel/ai.functions";
 import { useFin } from "@/lib/finmodel/store";
 import { addr } from "@/lib/finmodel/engine";
