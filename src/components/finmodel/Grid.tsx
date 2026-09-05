@@ -385,6 +385,53 @@ export function Grid() {
         </table>
       </div>
 
+      {/* validation panel */}
+      <div className="rounded-lg border bg-card print:hidden">
+        <button
+          type="button"
+          onClick={() => setShowIssues((v) => !v)}
+          className="flex w-full items-center gap-2 px-3 py-2 text-sm"
+        >
+          {issues.length === 0 ? (
+            <>
+              <CheckCircle2 className="size-4 text-primary" />
+              <span>Sem problemas detetados nesta folha.</span>
+            </>
+          ) : (
+            <>
+              <AlertTriangle className="size-4 text-destructive" />
+              <span className="font-medium">
+                {errorCount} erro{errorCount === 1 ? "" : "s"} · {warnCount} aviso
+                {warnCount === 1 ? "" : "s"}
+              </span>
+              <span className="ml-auto text-xs text-muted-foreground">
+                {showIssues ? "ocultar" : "ver detalhes"}
+              </span>
+            </>
+          )}
+        </button>
+        {showIssues && issues.length > 0 && (
+          <ul className="max-h-40 space-y-1 overflow-auto border-t px-3 py-2 text-sm">
+            {issues.map((i) => (
+              <li key={`${i.addr}-${i.message}`}>
+                <button
+                  type="button"
+                  onClick={() => goTo(i.addr)}
+                  className="flex w-full items-start gap-2 rounded px-1 py-0.5 text-left hover:bg-muted"
+                >
+                  {i.level === "error" ? (
+                    <XCircle className="mt-0.5 size-4 shrink-0 text-destructive" />
+                  ) : (
+                    <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                  )}
+                  <span>{i.message}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       {/* status bar */}
       <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-card px-3 py-1.5 font-mono text-xs text-muted-foreground print:hidden">
         <span>Células: {rangeAddrs.length}</span>
