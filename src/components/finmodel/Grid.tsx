@@ -308,6 +308,7 @@ export function Grid() {
                   const computed = values.get(`${sheet.id}!${a}`);
                   const isSel = sel.row === r && sel.col === c;
                   const isFormula = cellRaw.startsWith("=");
+                  const issue = issueMap.get(a);
                   const text = computed
                     ? computed.error
                       ? computed.error
@@ -317,6 +318,7 @@ export function Grid() {
                     <td
                       key={c}
                       data-addr={a}
+                      title={issue?.message}
                       className={[
                         "sheet-cell",
                         isSel ? "sheet-cell-sel" : "",
@@ -324,6 +326,8 @@ export function Grid() {
                         c === 0 ? "sheet-cell-label" : "",
                         isFormula ? "sheet-cell-calc" : "",
                         computed?.error ? "sheet-cell-err" : "",
+                        issue?.level === "error" ? "sheet-cell-invalid" : "",
+                        issue?.level === "warn" ? "sheet-cell-warned" : "",
                         typeof computed?.value === "number" ? "text-right tabular-nums" : "",
                       ].join(" ")}
                       onMouseDown={() => {
