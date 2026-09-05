@@ -1,16 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  AlertTriangle,
   ArrowDownToLine,
   ArrowRightToLine,
+  CheckCircle2,
   Eraser,
   Percent,
   Rows3,
   Columns3,
   Trash2,
+  XCircle,
 } from "lucide-react";
-import { addr, colName } from "@/lib/finmodel/engine";
+import { addr, colName, parseAddr } from "@/lib/finmodel/engine";
 import { useFin } from "@/lib/finmodel/store";
 import { formatValue, type Fmt } from "@/lib/finmodel/format";
+import { issuesByAddr, validateSheet } from "@/lib/finmodel/validate";
 import { Button } from "@/components/ui/button";
 
 const FMTS: { key: Fmt | "auto"; label: string }[] = [
