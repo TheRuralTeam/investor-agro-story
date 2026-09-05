@@ -18,6 +18,39 @@ const SUGESTOES = [
   "Preenche os meses de Janeiro a Dezembro no cabeçalho",
 ];
 
+interface Template {
+  nome: string;
+  descricao: string;
+  prompt: string;
+}
+
+const TEMPLATES: Template[] = [
+  {
+    nome: "Orçamento",
+    descricao: "Rubricas de orçamento vs. real, desvio e total anual.",
+    prompt:
+      'Cria uma nova folha chamada "Orçamento" com: linha de cabeçalho com os 12 meses (Jan a Dez) a partir da coluna B e uma coluna final "Total Ano"; na coluna A as rubricas típicas de orçamento (Pessoal, Transporte e logística, Pontos de agregação, Comissões a operadoras, Marketing, Tecnologia, Administrativo, Outros); deixa as células dos meses VAZIAS para eu preencher; acrescenta a linha "Total Orçamento" com fórmulas SUM por coluna e a coluna "Total Ano" com SUM por linha. Formata todas as linhas de valores como "kz". Não inventes números.',
+  },
+  {
+    nome: "Fluxo de Caixa",
+    descricao: "Entradas, saídas, fluxo líquido e saldo acumulado.",
+    prompt:
+      'Cria uma nova folha chamada "Fluxo de Caixa" com cabeçalho de 12 meses (Jan a Dez) a partir da coluna B. Secção "Entradas" (Recebimentos de vendas, Comissões de transporte, Comissões mobile money, Outras entradas) com linha "Total Entradas" em SUM; secção "Saídas" (Pagamentos a produtores, Motoristas, Operadoras de pagamento, Pontos de agregação, Equipa, Outras saídas) com "Total Saídas" em SUM; depois "Fluxo Líquido" (=Total Entradas - Total Saídas), "Saldo Inicial" e "Saldo Final" (=Saldo Inicial + Fluxo Líquido), com o Saldo Inicial de cada mês a referenciar o Saldo Final do mês anterior por fórmula. Células de input vazias. Formata as linhas de valores como "kz".',
+  },
+  {
+    nome: "Despesas",
+    descricao: "Registo de despesas por categoria com % do total.",
+    prompt:
+      'Cria uma nova folha chamada "Despesas" com cabeçalho: Data, Categoria, Descrição, Fornecedor, Valor (Kz), % do Total. Deixa 20 linhas vazias para registo. No fim acrescenta a linha "Total" com SUM da coluna Valor, e na coluna "% do Total" a fórmula IFERROR(valor/total;0) com referência absoluta ao total, formatada como "pct". Formata a coluna de valores como "kz". Não inventes registos.',
+  },
+  {
+    nome: "Receita",
+    descricao: "Receita pelas 3 fontes, total e crescimento m/m.",
+    prompt:
+      'Cria uma nova folha chamada "Receita" com cabeçalho de 12 meses (Jan a Dez) a partir da coluna B e coluna final "Total Ano". Linhas: Caixas transacionadas, Preço médio por caixa, GMV (=caixas*preço), Comissão venda formal (%), Receita venda formal, Comissão por caixa (Kz), Receita transporte, Comissão mobile money (%), Receita mobile money, "Receita Total" (SUM das três receitas) e "Crescimento m/m" (=IFERROR(mês atual/mês anterior-1;0)). As linhas de pressupostos ficam vazias para eu preencher; as linhas calculadas levam fórmulas. Formata receitas como "kz", percentagens como "pct" e caixas como "num".',
+  },
+];
+
 export function AiAgent() {
   const { sheet, sheets, values, applyAiOps } = useFin();
   const ask = useServerFn(askFinAgent);
