@@ -785,3 +785,13 @@
 @utility sheet-row-note {
   td { color: var(--muted-foreground); font-size: 0.75rem; font-style: italic; }
 }
+
+@utility sheet-cell-invalid {
+  background: color-mix(in oklab, var(--destructive) 16%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--destructive);
+}
+
+@utility sheet-cell-warned {
+  background: color-mix(in oklab, #d97706 18%, transparent);
+  box-shadow: inset 0 0 0 1.5px #d97706;
+}
